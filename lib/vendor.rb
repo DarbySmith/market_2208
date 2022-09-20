@@ -13,4 +13,10 @@ class Vendor
   def check_stock(item)
     @inventory[item]
   end
+
+  def potential_revenue
+    @inventory.map do |item, quantity|
+      quantity * item.price
+    end.sum
+  end
 end
