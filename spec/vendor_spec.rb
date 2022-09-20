@@ -2,7 +2,7 @@ require 'rspec'
 require './lib/item'
 require './lib/vendor'
 
-RSpec.descirbe Vendor do
+RSpec.describe Vendor do
   before (:each) do
     @vendor = Vendor.new("Rocky Mountain Fresh")
   end
