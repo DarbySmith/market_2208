@@ -44,4 +44,8 @@ class Market
       details[:quantity] > 50 && details[:vendors].count >= 2
     end.keys
   end
+
+  def sorted_item_list
+    total_inventory.keys.map {|item| item.name}.sort
+  end
 end
