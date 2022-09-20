@@ -35,10 +35,6 @@ RSpec.describe Market do
       @market.add_vendor(@vendor2)
       @market.add_vendor(@vendor3)
       expect(@market.vendors).to eq([@vendor1, @vendor2, @vendor3])
-      # @vendor1.stock(@item1, 35)
-      # @vendor1.stock(@item2, 7)
-      # @vendor2.stock(@item4, 50)
-      # @vendor2.stock(@item3, 25)
     end
   end
   
@@ -65,6 +61,113 @@ describe '#vendors_that_sell' do
     @vendor3.stock(@item1, 65)
     expect(@market.vendors_that_sell(@item1)).to eq([@vendor1, @vendor3])
     expect(@market.vendors_that_sell(@item4)).to eq([@vendor2])
+    end
+  end
+
+  describe '#total_inventory' do
+    it 'returns hash with every item and its quantity and vendors' do
+      @market.add_vendor(@vendor1)
+      @market.add_vendor(@vendor2)
+      @market.add_vendor(@vendor3)
+      @vendor1.stock(@item1, 35)
+      @vendor1.stock(@item2, 7)
+      @vendor2.stock(@item4, 50)
+      @vendor2.stock(@item3, 25)
+      @vendor3.stock(@item1, 65)
+      @vendor3.stock(@item3, 10)
+      
+      total_inventory_items = {
+        @item1 => {
+          quantity: 100,
+          vendors: [@vendor1, @vendor3]
+        },
+        @item2 => {
+          quantity: 7,
+          vendors: [@vendor1]
+        },
+        @item4 => {
+          quantity: 50,
+          vendors: [@vendor2]
+        },
+        @item3 => {
+          quantity: 35,
+          vendors: [@vendor2, @vendor3]
+        }
+      }
+      
+      expect(@market.total_inventory).to eq(total_inventory_items)
+    end
+  end
+
+  describe '#overstocked_items' do
+    it 'returns array of items that are sold by more than one vendor and total quantity is greater than 50' do
+      @vendor1.stock(@item1, 35)
+      @vendor1.stock(@item2, 7)
+      @vendor2.stock(@item4, 50)
+      @vendor2.stock(@item3, 25)
+      @vendor3.stock(@item1, 65)
+      @vendor3.stock(@item3, 10)
+      @market.add_vendor(@vendor1)
+      @market.add_vendor(@vendor2)
+      @market.add_vendor(@vendor3)
+
+      total_inventory_items = {
+        @item1 => {
+          quantity: 100,
+          vendors: [@vendor1, @vendor3]
+        },
+        @item2 => {
+          quantity: 7,
+          vendors: [@vendor1]
+        },
+        @item4 => {
+          quantity: 50,
+          vendors: [@vendor2]
+        },
+        @item3 => {
+          quantity: 35,
+          vendors: [@vendor2, @vendor3]
+        }
+      }
+      
+      expect(@market.total_inventory).to eq(total_inventory_items)
+      expect(@market.overstocked_items).to eq([@item1])
+    end
+  end
+
+  xdescribe '#sorted_item_list' do
+    it 'returns an array of items sorted alphabetically by name' do
+      @vendor1.stock(@item1, 35)
+      @vendor1.stock(@item2, 7)
+      @vendor2.stock(@item4, 50)
+      @vendor2.stock(@item3, 25)
+      @vendor3.stock(@item1, 65)
+      @vendor3.stock(@item3, 10)
+      @market.add_vendor(@vendor1)
+      @market.add_vendor(@vendor2)
+      @market.add_vendor(@vendor3)
+
+      total_inventory_items = {
+        @item1 => {
+          quantity: 100,
+          vendors: [@vendor1, @vendor3]
+        },
+        @item2 => {
+          quantity: 7,
+          vendors: [@vendor1]
+        },
+        @item4 => {
+          quantity: 50,
+          vendors: [@vendor2]
+        },
+        @item3 => {
+          quantity: 35,
+          vendors: [@vendor2, @vendor3]
+        }
+      }
+      
+      expect(@market.total_inventory).to eq(total_inventory_items)
+      expect(@market.sorted_item_list).to eq([@item4, @item1, @item3, @item2])
     end
   end
 end
