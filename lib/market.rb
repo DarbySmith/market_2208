@@ -21,4 +21,27 @@ class Market
       vendor.inventory[item] != 0
     end
   end
+
+  def total_inventory
+    inventory_available = {}
+    @vendors.each do |vendor|
+      vendor.inventory.each do |item, amount|
+        if inventory_available[item] == nil
+          inventory_available[item] = {
+            quantity: amount, 
+            vendors: vendors_that_sell(item)
+            }
+        else
+          inventory_available[item][:quantity] += amount
+        end
+      end
+    end
+    inventory_available
+  end
+
+  def overstocked_items
+    total_inventory.select do |item, details|
+      details[:quantity] > 50 && details[:vendors].count >= 2
+    end.keys
+  end
 end
