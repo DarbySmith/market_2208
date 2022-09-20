@@ -9,4 +9,8 @@ class Vendor
   def stock(item, amount)
     @inventory[item] += amount
   end
+
+  def check_stock(item)
+    @inventory[item]
+  end
 end
