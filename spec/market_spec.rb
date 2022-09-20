@@ -135,7 +135,7 @@ describe '#vendors_that_sell' do
     end
   end
 
-  xdescribe '#sorted_item_list' do
+  describe '#sorted_item_list' do
     it 'returns an array of items sorted alphabetically by name' do
       @vendor1.stock(@item1, 35)
       @vendor1.stock(@item2, 7)
@@ -167,7 +167,7 @@ describe '#vendors_that_sell' do
       }
       
       expect(@market.total_inventory).to eq(total_inventory_items)
-      expect(@market.sorted_item_list).to eq([@item4, @item1, @item3, @item2])
+      expect(@market.sorted_item_list).to eq(["Banana Nice Cream", "Peach", "Peach-Raspberry Nice Cream", "Tomato"])
     end
   end
 end
